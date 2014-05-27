@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+
+require 'optparse'
+
+options = {}
+dir = Dir.getwd
+
+option_parser = OptionParser.new do |opts|
+ 
+  opts.banner = 'here is textmate 2 disable Extended Attributes help messages of the command line tool.'
+
+  opts.on('-d DirectoryName', '--dir DirectoryName', 'Pass-in dir name') do |value|
+    options[:dir_name] = value
+	
+  end
+
+end.parse!
+
+if options[:dir_name]
+	cmd = "defaults write com.macromates.TextMate.preview volumeSettings '{ '#{options[:dir_name]}' = { extendedAttributes = 0; }; }'"
+	puts cmd
+else
+	cmd = "defaults write com.macromates.TextMate.preview volumeSettings '{ \"#{dir}\" = { extendedAttributes = 0; }; }'"
+	puts "execute shell: #{cmd}"
+	`#{cmd}`
+end
